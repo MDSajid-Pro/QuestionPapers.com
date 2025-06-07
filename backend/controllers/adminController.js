@@ -4,10 +4,17 @@ export const adminLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    if (email !== process.env.ADMIN_EMAIL || password !== process.env.ADMIN_PASSWORD) {
+    if (email !== process.env.ADMIN_EMAIL) {
       return res.json({
         success: false,
-        message: 'Invalid credentials'
+        message: 'Invalid Email'
+      })
+    }
+
+    if (password !== process.env.ADMIN_PASSWORD) {
+      return res.json({
+        success: false,
+        message: 'Invalid Password'
       })
     }
     
@@ -21,4 +28,3 @@ export const adminLogin = async (req, res) => {
     })
   }
 }
-
