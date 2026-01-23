@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken'
+import questionPaperModel from '../models/questionPapersModel.js';
 
 export const adminLogin = async (req, res) => {
   try {
@@ -26,5 +27,32 @@ export const adminLogin = async (req, res) => {
       success: false,
       message: error.message
     })
+  }
+}
+
+export const getAllQuestionsAdmin = async(req, res) => {
+  try {
+    const questions = await questionPaperModel.find({}).sort({ createdAt: -1 })
+    res.json({success: true,questions })
+  } catch (error) {
+    res.json({
+      success: false,
+      message: error.message
+    })
+  }
+}
+
+export const getDashboard = async (req, res) => {
+  try {
+    const questions = await questionPaperModel.countDocuments();
+
+    const dashboardData = {
+      questions
+    }
+
+    res.json({success: true, dashboardData})
+
+  } catch (error) {
+    res.json({success: false, message: error.message})
   }
 }

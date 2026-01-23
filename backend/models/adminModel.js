@@ -3,7 +3,12 @@ import mongoose from "mongoose";
 const adminSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
-    email: { type: String, required: true, unique: true },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      lowercase: true,
+    },
     password: { type: String, required: true },
     verifyOtp: { type: String, default: "" },
     verifyOtpExpireAt: { type: Number, default: 0 },
@@ -14,6 +19,6 @@ const adminSchema = new mongoose.Schema(
   { timestamps: true, versionKey: false }
 );
 
-const adminModel = mongoose.Model.user || mongoose.model("admin", adminSchema);
+const adminModel = mongoose.Model.admin || mongoose.model("admin", adminSchema);
 
 export default adminModel;
