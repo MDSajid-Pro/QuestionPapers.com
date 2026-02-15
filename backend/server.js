@@ -5,6 +5,7 @@ import connectDB from './config/db.js';
 import adminRouter from './routes/adminRoutes.js';
 import questionPaperRouter from './routes/questionPaperRoute.js';
 import Paper from './models/questionPapersModel.js'; 
+import queryRoutes from './routes/queryRoutes.js';
 
 const app = express();
 const port = process.env.PORT || 5000; 
@@ -14,10 +15,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// ---------------------------------------------------------
-// ★ CRITICAL FIX: Database Connection Middleware
-// ---------------------------------------------------------
-// This forces Vercel to wait for the DB to connect before handling ANY request
+
 app.use(async (req, res, next) => {
     try {
         await connectDB();
@@ -84,13 +82,12 @@ app.get('/api/options', async (req, res) => {
 // ---------------------------------------------------------
 app.use('/api/admin', adminRouter);
 app.use('/api/question-paper', questionPaperRouter);
+app.use('/api/queries', queryRoutes);
 
 // --- Start Server (Conditional) ---
 // Only run app.listen locally. Vercel handles this automatically.
-if (process.env.NODE_ENV !== 'production') {
     app.listen(port, () => {
         console.log(`Server is running locally on port: ${port}`);
     });
-}
 
 export default app;
